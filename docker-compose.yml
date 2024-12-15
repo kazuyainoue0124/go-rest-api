@@ -5,23 +5,33 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: todo
-      MYSQL_USER: todo_user
+      MYSQL_USER: todouser
       MYSQL_PASSWORD: secret
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      test: ["CMD-SHELL", "mysql -u todouser -psecret -h localhost -e 'SELECT 1'"]
       interval: 10s
       timeout: 5s
-      retries: 3
+      retries: 5
+
+  migrate:
+    image: migrate/migrate:latest
+    depends_on:
+      db:
+        condition: service_healthy
+    entrypoint: ["migrate", "-path", "/migrations", "-database", "mysql://todouser:secret@tcp(db:3306)/todo"]
+    command: ["up"]
+    volumes:
+      - ./infrastructure/db/migrations:/migrations:ro
 
   app:
     build: .
     environment:
       DB_HOST: db
-      DB_USER: todo_user
+      DB_USER: todouser
       DB_PASSWORD: secret
       DB_NAME: todo
       DB_PORT: 3306
@@ -31,6 +41,5 @@ services:
     depends_on:
       db:
         condition: service_healthy
-
 volumes:
   db_data:
