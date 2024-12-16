@@ -15,10 +15,10 @@ func NewTask(title, description string) (*Task, error) {
 		return nil, ErrTitleEmpty
 	}
 	return &Task{
-		Title: title,
+		Title:       title,
 		Description: description,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now(),
 	}, nil
 }
 

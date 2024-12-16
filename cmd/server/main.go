@@ -34,7 +34,6 @@ func main() {
 	mux := router.NewRouter(h)
 	portStr := ":" + strconv.Itoa(cfg.App.Port)
 
-
 	srv := &http.Server{
 		Addr:    portStr,
 		Handler: mux,

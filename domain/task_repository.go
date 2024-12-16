@@ -9,4 +9,3 @@ type ITaskRepository interface {
 	UpdateTask(ctx context.Context, t *Task) error
 	DeleteTask(ctx context.Context, id int64) error
 }
-
