@@ -26,29 +26,33 @@ func (u *TaskUsecase) GetTaskById(ctx context.Context, id int64) (*domain.Task, 
 
 // 作成
 func (u *TaskUsecase) CreateTask(ctx context.Context, title, description string) (int64, error) {
-	if title == "" {
-		return 0, domain.ErrInvalid
-	}
-	t := &domain.Task{
-		Title:       title,
-		Description: description,
+	task, err := domain.NewTask(title, description)
+	if err != nil {
+		return 0, err
 	}
 
-	return u.repo.CreateTask(ctx, t)
+	id, err := u.repo.CreateTask(ctx, task)
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
 }
 
 // 更新
 func (u *TaskUsecase) UpdateTask(ctx context.Context, id int64, title, description string) error {
-	t, err := u.repo.GetTaskById(ctx, id)
+	task, err := u.repo.GetTaskById(ctx, id)
 	if err != nil {
 		return err
 	}
-	if title == "" {
-		return domain.ErrInvalid
+	if err := task.Update(title, description); err != nil {
+		return err
 	}
-	t.Title = title
-	t.Description = description
-	return u.repo.UpdateTask(ctx, t)
+
+	if err := u.repo.UpdateTask(ctx, task); err != nil {
+		return err
+	}
+	return nil
 }
 
 // 削除
