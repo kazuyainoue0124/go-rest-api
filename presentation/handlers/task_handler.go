@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -35,20 +34,15 @@ func (h *TaskHandler) GetAllTasks(w http.ResponseWriter, r *http.Request) {
 
 // GetTaskById: GET /tasks/{id}
 func (h *TaskHandler) GetTaskById(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("GetTaskById called with path: %s\n", r.URL.Path) // デバッグログ追加
 
 	id, err := extractIdFromPath(r.URL.Path, "/tasks/")
 	if err != nil {
-		fmt.Printf("Error extracting ID: %v\n", err) // デバッグログ追加
 		http.Error(w, "invalid id", http.StatusBadRequest)
 		return
 	}
 
-	fmt.Printf("Extracted ID: %d\n", id) // デバッグログ追加
-
 	task, err := h.u.GetTaskById(context.Background(), id)
 	if err != nil {
-		fmt.Printf("Error getting task: %v\n", err) // デバッグログ追加
 		if errors.Is(err, domain.ErrNotFound) {
 			http.NotFound(w, r)
 			return
