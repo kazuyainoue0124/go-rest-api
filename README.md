@@ -25,3 +25,43 @@ Goの勉強をしながら作っていたため、書き方が不統一だった
 抜け・漏れもありそう。
 
 いきなり完璧を求めすぎず徐々に改善していければと思う。
+
+## APIの動作確認
+
+### 1. Create(POST)
+
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"title":"New Task","description":"This is a new task"}' \
+  http://localhost:8080/tasks
+```
+
+### 2. Read(GET)
+
+#### (a)一覧取得
+
+```bash
+curl http://localhost:8080/tasks
+```
+
+#### (b)個別取得
+
+```bash
+curl http://localhost:8080/tasks/1
+```
+
+### 3. Update(PUTまたはPATCH)
+
+```bash
+curl -X PUT \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Updated Title","description":"Updated Description"}' \
+  http://localhost:8080/tasks/1
+```
+
+### 4. Delete(DELETE)
+
+```bash
+curl -X DELETE http://localhost:8080/tasks/1
+```
