@@ -8,13 +8,13 @@ import (
 )
 
 type mockRepo struct {
-	tasks      map[int64]*domain.Task
-	nextID     int64
+	tasks  map[int64]*domain.Task
+	nextID int64
 }
 
 func NewMockTaskRepo() *mockRepo {
 	return &mockRepo{
-		tasks: make(map[int64]*domain.Task),
+		tasks:  make(map[int64]*domain.Task),
 		nextID: 1,
 	}
 }

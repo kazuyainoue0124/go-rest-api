@@ -4,9 +4,9 @@ import "testing"
 
 func TestNewTask(t *testing.T) {
 	cases := []struct {
-		title string
+		title       string
 		description string
-		wantErr bool
+		wantErr     bool
 	}{
 		{"有効なタイトル", "説明", false},
 		{"", "説明", true},
